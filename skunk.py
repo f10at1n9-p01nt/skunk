@@ -1,4 +1,5 @@
 from random import randint
+import easygui
 
 def check_roll(dice_1, dice_2):
 	"""
@@ -15,7 +16,7 @@ def check_roll(dice_1, dice_2):
 		roll_score = dice_1 + dice_2
 		reset = False
 	return roll_score, reset
-	
+
 def score(roll_score, reset, total_score, current_round):
 	"""
 	INPUT: Score for current roll, reset score Boolean,
@@ -29,19 +30,18 @@ def score(roll_score, reset, total_score, current_round):
 	else:
 		new_score = current_round + roll_score
 		return new_score, total_score, False
-		
-def print_score(round_score, total_score):
-	print()
-	print("Your score for this round is " + str(round_score))
-	print("Your total score for the game is " + str(total_score))
-	print()
 
-def user_decision(round_score, total_score):
-	answer = input("Type 'b' to bank your points and go to the next round or press ENTER to roll again.")
-	print()
-	if answer == 'b':
+def print_score(round_score, total_score, print_dice):
+	round_print = "\nYour score for this round is " + str(round_score)
+	game_print = "\nYour total score for the game is " + str(total_score)
+	easygui.msgbox("Round over\n" + print_dice + round_print + game_print)
+
+def user_decision(round_score, total_score, roll_message):
+	answer = easygui.buttonbox(roll_message + "\nYour round score is " + str(round_score) + "\nBank your points and move on to the next round or roll again?",
+	choices = ['Keep points and go to next round','Roll again'])
+	if answer == 'Keep points and go to next round':
 		total_score += round_score
-		print("Your current game score is " + str(total_score))
+		easygui.msgbox("Your current game score is " + str(total_score))
 		return 0, total_score, True
 	else:
 		return round_score, total_score, False
@@ -50,32 +50,29 @@ def main():
 	round_score = 0
 	total_score = 0
 	number_ks = 0
-	print("Welcome to the game of SKUNK.")
+	easygui.msgbox("Welcome to the game of SKUNK.")
 	for letter in 'SKUNK':
 		end = False
-		print()
-		print("Here is the first roll of round " + letter)
-		print()
+		easygui.msgbox("Here is the first roll of round " + letter)
 		while end == False:
 			dice_1 = randint(1,6)
 			dice_2 = randint(1,6)
-			print("You rolled a " + str(dice_1) + " and a " + str(dice_2))
+			roll_message = ("You rolled a " + str(dice_1) + " and a " + str(dice_2))
 			a, b = check_roll(dice_1, dice_2)
 			round_score,total_score,end = score(a,b,total_score,round_score)
-			print_score(round_score, total_score)
 			if round_score != 0:
-				round_score, total_score, end = user_decision(round_score, total_score)
+				round_score, total_score, end = user_decision(round_score, total_score, roll_message)
+				print_dice = ''
+			else:
+				print_dice = roll_message
+				print_score(round_score, total_score, print_dice)
 		if letter == 'K':
 			number_ks += 1
 			if number_ks == 2:
-				print()
-				print("GAME OVER")
-				print("Your final score for the game is " + str(total_score))
+				easygui.msgbox("GAME OVER\n" + "Your final score for the game is " + str(total_score))
 			else:
-				print("Press ENTER to move on to the next round.")
-				input()
+				easygui.msgbox("Time for the next round.")
 		else:
-			print("Press ENTER to move on to the next round.")
-			input()
+			easygui.msgbox ("Time for the next round.")
 
 main()
