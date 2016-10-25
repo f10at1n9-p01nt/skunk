@@ -47,28 +47,33 @@ def user_decision(round_score, total_score, roll_message):
 		return round_score, total_score, False
 
 def main():
-	round_score = 0
-	total_score = 0
-	number_ks = 0
-	easygui.msgbox("Welcome to the game of SKUNK.")
-	for letter in 'SKUNK':
-		end = False
-		easygui.msgbox("Here is the first roll of round " + letter)
-		while end == False:
-			dice_1 = randint(1,6)
-			dice_2 = randint(1,6)
-			roll_message = ("You rolled a " + str(dice_1) + " and a " + str(dice_2))
-			a, b = check_roll(dice_1, dice_2)
-			round_score,total_score,end = score(a,b,total_score,round_score)
-			if round_score != 0:
-				round_score, total_score, end = user_decision(round_score, total_score, roll_message)
-				print_dice = ''
-			else:
-				print_dice = roll_message
-				print_score(round_score, total_score, print_dice)
-		if letter == 'K':
-			number_ks += 1
-			if number_ks == 2:
-				easygui.msgbox("GAME OVER\n" + "Your final score for the game is " + str(total_score))
+	game_play = True
+	while game_play == True:
+		round_score = 0
+		total_score = 0
+		number_ks = 0
+		easygui.msgbox("Welcome to the game of SKUNK.")
+		for letter in 'SKUNK':
+			end = False
+			easygui.msgbox("Here is the first roll of round " + letter, ok_button ="Let's Play!")
+			while end == False:
+				dice_1 = randint(1,6)
+				dice_2 = randint(1,6)
+				roll_message = ("You rolled a " + str(dice_1) + " and a " + str(dice_2))
+				a, b = check_roll(dice_1, dice_2)
+				round_score,total_score,end = score(a,b,total_score,round_score)
+				if round_score != 0:
+					round_score, total_score, end = user_decision(round_score, total_score, roll_message)
+					print_dice = ''
+				else:
+					print_dice = roll_message
+					print_score(round_score, total_score, print_dice)
+			if letter == 'K':
+				number_ks += 1
+				if number_ks == 2:
+					if easygui.ynbox("GAME OVER\n" + "Your final score for the game is " + str(total_score) + "\n Would you like to play again?"):
+						pass
+					else:
+						game_play = False
 
 main()
