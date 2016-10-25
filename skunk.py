@@ -37,7 +37,7 @@ def print_score(round_score, total_score, print_dice):
 	easygui.msgbox("Round over\n" + print_dice + round_print + game_print)
 
 def user_decision(round_score, total_score, roll_message):
-	answer = easygui.buttonbox(roll_message + "\nYour round score is " + str(round_score) + "\nBank your points and move on to the next round or roll again?",
+	answer = easygui.buttonbox(roll_message + "\nYour round score is " + str(round_score) + "\nYour total score is " + str(total_score) + "\nBank your points and move on to the next round or roll again?",
 	choices = ['Keep points and go to next round','Roll again'])
 	if answer == 'Keep points and go to next round':
 		total_score += round_score
