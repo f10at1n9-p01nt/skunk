@@ -70,9 +70,5 @@ def main():
 			number_ks += 1
 			if number_ks == 2:
 				easygui.msgbox("GAME OVER\n" + "Your final score for the game is " + str(total_score))
-			else:
-				easygui.msgbox("Time for the next round.")
-		else:
-			easygui.msgbox ("Time for the next round.")
 
 main()
